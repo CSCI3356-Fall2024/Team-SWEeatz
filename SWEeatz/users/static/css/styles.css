@@ -1,66 +1,70 @@
-/* Lighter shade of gold */
+/* General page settings */
 body {
-    background-color: #faf3c0; /* Light gold */
-    color: #611800; /* Maroon */
-    font-family: 'Arial', sans-serif;
+    padding-top: 56px;
 }
 
+/* Navbar styling */
 .navbar {
-    background-color: #611800; /* Maroon */
+    background-color: #611800; /* Maroon color */
+}
+
+.navbar-brand, .nav-link {
+    color: #fff !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.2rem;
 }
 
 .navbar-brand {
-    color: #FFD700 !important; /* Gold */
-    font-weight: bold;
-    font-size: 1.8em; /* Bigger font for Eagle Earth */
-    text-decoration: none !important; /* Remove underline */
+    font-size: 1.5rem;
+    text-decoration: none;
 }
 
-.nav-link {
-    color: #FFD700 !important; /* Gold */
-}
-
+/* Jumbotron section (home page) */
 .jumbotron {
-    background-color: #FFD966; /* Lighter gold */
-    color: #611800; /* Maroon */
-    border-radius: 15px;
+    background-color: #FAE5AC;  /* Lighter gold color */
+    padding: 2rem 0;
+    width: 100vw;  /* Full viewport width */
+    margin: 0;
 }
 
-h2 {
-    font-family: 'Georgia', serif;
+
+.container {
+    text-align: center;  /* Center the content */
+}
+
+.display-4 {
     font-weight: bold;
+    font-size: 2.5rem;
     text-align: center;
-    margin-bottom: 20px;
+    color: #611800;  /* Maroon text color */
 }
 
-p {
-    text-align: center; /* Center the guide text */
-}
-
-.btn-google {
-    background-color: #611800; /* Maroon */
+/* Button styling */
+.btn-lg {
+    background-color: #611800;  /* Maroon button */
     color: white;
-    font-weight: bold;
-    border-radius: 25px;
-    padding: 10px 20px;
-    font-size: 1.2em;
-    text-decoration: none; /* Remove underline from the button */
-    display: inline-block;
+    border-radius: 0.3rem;
+    font-size: 1.25rem;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
 }
 
-.btn-google:hover {
-    background-color: #FFD700; /* Gold on hover */
-    color: #611800; /* Maroon */
-    text-decoration: none; /* No underline on hover */
+.btn-lg:hover {
+    background-color: #4d0e00; /* Darker maroon for hover */
+    color: #fff;
 }
 
-footer {
-    background-color: #611800; /* Maroon */
-    color: #FFD700;
+/* Table styling for other pages */
+.table th, .table td {
+    vertical-align: middle;
+}
+
+/* Footer styling (if any footer is included) */
+.footer {
+    background-color: #611800;
+    color: white;
+    padding: 1rem;
     text-align: center;
-    padding: 20px 0;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+    font-size: 0.9rem;
 }
-

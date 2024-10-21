@@ -1,47 +1,21 @@
-{% load socialaccount %}
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eagle Earth - Google Sign-In</title>
+{% extends "layout.html" %}
 
-    <!-- Link to the custom CSS file -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% block title %} Welcome to Eagle Earth! {% endblock %}
 
-    <!-- Include Bootstrap for styling -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="#">Eagle Earth</a>
-    </nav>
-
-    <!-- Main Content Area -->
-    <div class="container mt-5">
-        <div class="jumbotron text-center">
-            <h2>Welcome to Eagle Earth</h2>
-            <p>Your guide to sustainable dining at Boston College</p>
-
+{% block content %}
+    <div class="jumbotron text-center" style="background-color: #FAE5AC; padding: 2rem 0; width: 100vw; margin: 0;">
+        <div class="container" style="max-width: 100%; text-align: center;">
+            <h1 class="display-4">Your Guide to Sustainable Dining at Boston College</h1>
+            <p class="lead">Explore sustainability efforts and make eco-conscious dining choices.</p>
             {% if user.is_authenticated %}
                 <p>You are signed in as {{ user.email }}.</p>
-                <a href="/create/" class="btn btn-google">Create Profile</a>
+                <a href="{% url 'student_create' %}" class="btn btn-primary">Create Profile</a>
                 <a href="{% url 'account_logout' %}" class="btn btn-danger">Logout</a>
             {% else %}
-                <a href="{% provider_login_url 'google' %}?next=/create/" class="btn btn-google">Login with Google</a>
+                <a class="btn btn-lg" style="background-color: #611800; color: white;" href="{% url 'account_login' %}">Login</a>
             {% endif %}
         </div>
     </div>
+{% endblock %}
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Eagle Earth | Sustainable Dining at Boston College</p>
-    </footer>
 
-    <!-- Include Bootstrap JS for functionality -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
