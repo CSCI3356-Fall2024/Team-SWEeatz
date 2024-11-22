@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h2 class="text-center"> Student Profile </h2>
+    <p><strong>Logged in as:</strong> {{ full_name }}</p>
+    <form method="POST" enctype="multipart/form-data"  class="jumbotron">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success btn-block" type="submit"> Save Profile</button>
+    </form>
+</div>
+{% endblock %}

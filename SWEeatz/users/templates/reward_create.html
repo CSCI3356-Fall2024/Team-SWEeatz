@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %} Create Reward {% endblock %}
+
+{% block content %}
+<br><br><br>
+<div class="d-flex justify-content-center align-items-center position-relative mb-4">
+    <h2 class="text-center m-0" style="color: #611800;">Reward Creation Page (Admin Only)</h2>
+</div>
+
+<div class="row">
+    <!-- Left Column: Existing Rewards -->
+    <div class="col-md-4">
+        <h3>Existing Rewards</h3>
+        <ul class="list-group" id="reward-list">
+            {% for reward in rewards %}
+            <li class="list-group-item" data-reward-id="{{ reward.id }}" style="position: relative;">
+                <button class="btn btn-link three-dots-btn" data-toggle="modal" data-target="#editRewardModal" onclick="openEditModal({{ reward.id }}, '{{ reward.title }}', '{{ reward.description }}', {{ reward.points_required }}, '{{ reward.available_from|date:'Y-m-d' }}', '{{ reward.available_until|date:'Y-m-d' }}')">...</button>
+                <h5>{{ reward.title }}</h5>
+                <p>{{ reward.description|truncatewords:20 }}</p>
+                <p><strong>Points Required:</strong> {{ reward.points_required }}</p>
+                <small>Available From: {{ reward.available_from }}</small><br>
+                <small>Available Until: {{ reward.available_until }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <button id="load-more" class="btn btn-primary mt-3" data-offset="2">Load More</button>
+        <button id="show-less" class="btn btn-primary mt-3" style="display: none;">Show Less</button>
+    </div>
+
+    <!-- Right Column: Reward Creation Form -->
+    <div class="col-md-8">
+        <h3>Create a New Reward</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Reward Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="points_required">Points Required</label>
+                <input type="number" class="form-control" id="points_required" name="points_required" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="available_from">Available From</label>
+                <input type="date" class="form-control" id="available_from" name="available_from" required>
+            </div>
+            <div class="form-group">
+                <label for="available_until">Available Until</label>
+                <input type="date" class="form-control" id="available_until" name="available_until" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Reward</button>
+        </form>
+    </div>
+</div>
+
+<!-- Editing or Deleting Reward NOT CURRENTLY FULLY FUNCTIONAL-->
+<div class="modal fade" id="editRewardModal" tabindex="-1" aria-labelledby="editRewardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editRewardForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editRewardModalLabel">Edit Reward</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-reward-id" name="reward_id">
+                    <div class="form-group">
+                        <label for="edit-title">Title</label>
+                        <input type="text" class="form-control" id="edit-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-description">Description</label>
+                        <textarea class="form-control" id="edit-description" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-points-required">Points Required</label>
+                        <input type="number" class="form-control" id="edit-points-required" name="points_required" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-available-from">Available From</label>
+                        <input type="date" class="form-control" id="edit-available-from" name="available_from" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-available-until">Available Until</label>
+                        <input type="date" class="form-control" id="edit-available-until" name="available_until" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteReward()">Delete</button>
+                    <button type="button" class="btn btn-primary" onclick="saveReward()">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

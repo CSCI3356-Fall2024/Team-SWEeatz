@@ -1,0 +1,114 @@
+body {
+    background-color: #dad0d0; 
+    color: #611800; 
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    background-color: #611800; 
+}
+
+.navbar-brand {
+    color: #dad0d0 !important; 
+    font-weight: bold;
+    font-size: 1.8em; 
+    text-decoration: none !important;
+    position: relative;
+    transform: translateY(0);
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-brand:hover {
+    transform: translateY(-2px);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link {
+    color: #dad0d0 !important; 
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Updated hover effect for navbar buttons */
+.nav-link:hover {
+    color: #ff9e80 !important; /* Warmer, slightly orange tint */
+}
+
+/* Underline animation for nav links */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ff9e80; /* Matching the hover text color */
+    transition: width 0.3s ease-in-out;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.jumbotron {
+    background-color: #dad0d0; 
+    color: #611800;
+    border-radius: 15px;
+}
+
+h2 {
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+p {
+    text-align: center;
+}
+
+.btn-google {
+    background-color: #611800; 
+    color: white;
+    font-weight: bold;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-google:hover {
+    background-color: #dad0d0;
+    color: #611800;
+    text-decoration: none;
+}
+
+footer {
+    background-color: #611800; 
+    color: #dad0d0;
+    text-align: center;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.container {
+    margin-top: 50px; /* Move content further down */
+}
+
+.form-check {
+    margin-bottom: 20px;
+}
+
+.form-check-label {
+    font-size: 1.2em;
+    color: #611800;
+}
+
+.form-group label {
+    font-size: 1.2em;
+    color: #611800;
+}

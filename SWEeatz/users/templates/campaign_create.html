@@ -1,0 +1,300 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %} Create Campaign {% endblock %}
+
+{% block content %}
+<br><br><br>
+<div class="d-flex justify-content-center align-items-center position-relative mb-4">
+    <h2 class="text-center m-0" style="color: #611800;">Campaign Creation Page (Admin Only)</h2>
+    <a href="{% url 'campaign_data' %}" class="btn btn-primary position-absolute" style="right: 0;">View Campaign Data</a>
+</div>
+
+<div class="row">
+<!-- Left Column: Existing Campaigns -->
+<div class="col-md-4">
+    <h3>Existing Campaigns</h3>
+    <ul class="list-group" id="campaign-list">
+        {% for campaign in campaigns %}
+        <li class="list-group-item" data-campaign-id="{{ campaign.id }}" style="position: relative;">
+            <!-- Edit Button with Modal Trigger -->
+            <button 
+                class="btn btn-link three-dots-btn" 
+                data-toggle="modal" 
+                data-target="#editCampaignModal" 
+                onclick="openEditModal(
+                    {{ campaign.id }},
+                    &quot;{{ campaign.title }}&quot;,
+                    &quot;{{ campaign.description }}&quot;,
+                    &quot;{{ campaign.start_date|date:'Y-m-d' }}&quot;,
+                    &quot;{{ campaign.end_date|date:'Y-m-d' }}&quot;,
+                    {{ campaign.points }},
+                    {% if campaign.image and campaign.image.name %}&quot;{{ campaign.image.url }}&quot;{% else %}null{% endif %}
+                )">
+                ...
+            </button>
+            
+            <!-- Display Image or Placeholder -->
+            {% if campaign.image and campaign.image.name %}
+                <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" style="width: 100%; height: auto;">
+            {% else %}
+                <img src="{% static 'path/to/placeholder-image.jpg' %}" alt="No image available" style="width: 100%; height: auto;">
+            {% endif %}
+
+            <h5>{{ campaign.title }}</h5>
+            <p>{{ campaign.description|truncatewords:20 }}</p>
+            <p><strong>Points:</strong> {{ campaign.points }}</p> 
+            <small>Start Date: {{ campaign.start_date }}</small><br>
+            <small>End Date: {{ campaign.end_date }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+    
+    <!-- Load More and Show Less Buttons -->
+    <button id="load-more" class="btn btn-primary mt-3" data-offset="2">Load More</button>
+    <button id="show-less" class="btn btn-primary mt-3" style="display: none;">Show Less</button>
+</div>
+
+
+<!-- Modal for Editing or Deleting Campaign -->
+<div class="modal fade" id="editCampaignModal" tabindex="-1" aria-labelledby="editCampaignModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCampaignModalLabel">Edit Campaign</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editCampaignForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" id="edit-campaign-id" name="campaign_id">
+                    <div class="form-group">
+                        <label for="edit-title">Title</label>
+                        <input type="text" class="form-control" id="edit-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-description">Description</label>
+                        <textarea class="form-control" id="edit-description" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-start-date">Start Date</label>
+                        <input type="date" class="form-control" id="edit-start-date" name="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-end-date">End Date</label>
+                        <input type="date" class="form-control" id="edit-end-date" name="end_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-points">Points</label>
+                        <input type="number" class="form-control" id="edit-points" name="points" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-image">Campaign Image</label>
+                        <div id="current-image-container" style="margin-bottom: 10px;">
+                            <img id="current-image" src="" alt="Current Campaign Image" style="width: 100%; height: auto; display: none;">
+                        </div>
+                        <input type="file" class="form-control-file" id="edit-image" name="image">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="delete-image" name="delete_image">
+                            <label class="form-check-label" for="delete-image">Delete current image</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteCampaign()">Delete</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCampaign()">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- Right Column: Campaign Creation Form -->
+    <div class="col-md-8">
+        <h3>Create a New Campaign</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Campaign Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="points">Points</label>
+                <input type="number" class="form-control" id="points" name="points" min="0" required>
+            </div>            
+            <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" required>
+            </div>
+            <div class="form-group">
+                <label for="end_date">End Date</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Campaign Image</label>
+                <input type="file" class="form-control-file" id="image" name="image">
+            </div>
+            <button type="submit" class="btn btn-primary">Create Campaign</button>
+        </form>      
+    </div>       
+</div>
+
+{% comment %} Define placeholder image URL for JavaScript use {% endcomment %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const totalCampaigns = {{ total_campaigns }};  // Total campaigns from the view
+        const placeholderImage = "{% static 'path/to/placeholder-image.jpg' %}";
+    
+        document.getElementById('load-more').addEventListener('click', function() {
+            const offset = parseInt(this.getAttribute('data-offset'));
+
+            fetch(`/create-campaign/load_more/?offset=${offset}`)
+                .then(response => response.json())
+                .then(data => {
+                    const campaignList = document.getElementById('campaign-list');
+                    data.campaigns.forEach(campaign => {
+                        const item = document.createElement('li');
+                        item.className = 'list-group-item additional-campaign';
+                        item.style.position = 'relative';
+
+                        const imageUrl = campaign.image_url ? campaign.image_url : placeholderImage;
+
+                        item.innerHTML = `
+                            <button 
+                                class="btn btn-link three-dots-btn" 
+                                data-toggle="modal" 
+                                data-target="#editCampaignModal" 
+                                onclick="openEditModal(
+                                    ${campaign.id},
+                                    '${campaign.title.replace(/'/g, "\\'")}', 
+                                    '${campaign.description.replace(/'/g, "\\'")}', 
+                                    '${campaign.start_date}', 
+                                    '${campaign.end_date}', 
+                                    ${campaign.points}, 
+                                    '${imageUrl}'
+                                )">
+                                ...
+                            </button>
+                            <img src="${imageUrl}" alt="${campaign.title}" style="width: 100%; height: auto;">
+                            <h5>${campaign.title}</h5>
+                            <p>${campaign.description.substring(0, 100)}...</p>
+                            <p><strong>Points:</strong> ${campaign.points}</p>
+                            <small>Start Date: ${campaign.start_date}</small><br>
+                            <small>End Date: ${campaign.end_date}</small>
+                        `;
+
+                        campaignList.appendChild(item);
+                    });
+
+                    const newOffset = offset + data.campaigns.length;
+                    this.setAttribute('data-offset', newOffset);
+
+                    if (newOffset >= totalCampaigns) {
+                        this.style.display = 'none';
+                    }
+
+                    document.getElementById('show-less').style.display = 'inline-block';
+                });
+        });
+
+        document.getElementById('show-less').addEventListener('click', function() {
+            const additionalCampaigns = document.querySelectorAll('.additional-campaign');
+            additionalCampaigns.forEach(item => item.remove());
+
+            document.getElementById('load-more').setAttribute('data-offset', 2);
+            document.getElementById('load-more').style.display = 'inline-block';
+            this.style.display = 'none';
+        });
+    });
+    
+    // Function to open the Edit Campaign modal
+    function openEditModal(id, title, description, startDate, endDate, points, imageUrl) {
+        console.log("Opening edit modal for campaign ID:", id);
+        document.getElementById('edit-campaign-id').value = id;
+        document.getElementById('edit-title').value = title;
+        document.getElementById('edit-description').value = description;
+        document.getElementById('edit-start-date').value = startDate || '';
+        document.getElementById('edit-end-date').value = endDate || '';
+        document.getElementById('edit-points').value = points;
+
+        const currentImage = document.getElementById('current-image');
+        if (imageUrl && imageUrl !== placeholderImage) {
+            currentImage.src = imageUrl;
+            currentImage.style.display = 'block';
+        } else {
+            currentImage.style.display = 'none';
+        }
+    }
+
+    // Function to save the changes in the Edit Campaign modal
+    function saveCampaign() {
+        const campaignId = document.getElementById('edit-campaign-id').value;
+        const title = document.getElementById('edit-title').value;
+        const description = document.getElementById('edit-description').value;
+        const startDate = document.getElementById('edit-start-date').value;
+        const endDate = document.getElementById('edit-end-date').value;
+        const points = document.getElementById('edit-points').value;
+        const image = document.getElementById('edit-image').files[0];
+        const deleteImage = document.getElementById('delete-image').checked;
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('start_date', startDate);
+        formData.append('end_date', endDate);
+        formData.append('points', points);
+        if (image) {
+            formData.append('image', image);  // Upload new image if present
+        }
+        if (deleteImage) {
+            formData.append('delete_image', 'true');  // Only delete image, not the campaign
+        }
+
+        fetch(`/update_campaign/${campaignId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload(); // Reload to see the updated campaign
+            } else {
+                alert("Failed to update campaign: " + (data.error || "Unknown error"));
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    // Function to delete the campaign in the Edit Campaign modal
+    function deleteCampaign() {
+        const campaignId = document.getElementById('edit-campaign-id').value;
+
+        fetch(`/delete_campaign/${campaignId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert("Failed to delete campaign.");
+            }
+        });
+    }
+</script>
+
+{% endblock %}

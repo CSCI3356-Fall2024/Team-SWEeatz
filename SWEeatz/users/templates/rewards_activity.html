@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container-fluid rewards-activity-page" style="margin-top: 3cm;">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-md-10 main-content">
+            <!-- Points Balance -->
+            <div class="d-flex justify-content-end mb-4">
+                <h4>Current Points Balance: <strong>{{ current_balance }}</strong></h4>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-center mb-5">Rewards Activity Page</h2>
+
+            <!-- Completed Actions Section -->
+            <h3>Completed Actions</h3>
+            <div class="completed-actions mb-5">
+                {% if completed_actions %}
+                    {% for completed_action in completed_actions %}
+                        <div class="action-item row align-items-center mb-3 p-3 border">
+                            <div class="col-2">
+                                <img src="{{ completed_action.photo.url }}" alt="{{ completed_action.action.name }}" class="campaign-image img-fluid rounded">
+                            </div>
+                            <div class="col-8">
+                                <p class="mb-0 font-weight-bold">{{ completed_action.action.name }}</p>
+                                <p class="text-muted">Date Completed: {{ completed_action.date_completed }}</p>
+                                <p class="text-muted">Points Earned: {{ completed_action.points_earned }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">You haven't completed any actions yet.</p>
+                {% endif %}
+            </div>
+
+            <!-- Previous Reward Exchanges Section -->
+            <h3>Previous Reward Exchanges</h3>
+            <div class="previous-exchanges mb-5">
+                {% if previous_exchanges %}
+                    {% for exchange in previous_exchanges %}
+                        <div class="exchange-item row align-items-center mb-3 p-3 border">
+                            <div class="col-8">
+                                <p class="mb-0 font-weight-bold">{{ exchange.reward.title }}</p>
+                                <p class="text-muted">Points Used: {{ exchange.points_used }}</p>
+                                <p class="text-muted">Date Redeemed: {{ exchange.date_redeemed }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No rewards exchanged yet.</p>
+                {% endif %}
+            </div>
+
+            <!-- Available Rewards Section -->
+            <h3>Available Rewards</h3>
+            <div class="available-rewards">
+                {% if possible_rewards %}
+                    {% for reward in possible_rewards %}
+                        <div class="reward-item row align-items-center mb-3 p-3 border">
+                            <div class="col-10">
+                                <h5>{{ reward.title }} - <span class="text-primary">{{ reward.points_required }} Points</span></h5>
+                                <p>{{ reward.description }}</p>
+                            </div>
+                            <div class="col-2">
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="reward_id" value="{{ reward.id }}">
+                                    <button type="submit" class="btn btn-success"
+                                        {% if current_balance < reward.points_required %}disabled{% endif %}>
+                                        Exchange
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No rewards available at this time.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

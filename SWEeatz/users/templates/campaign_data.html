@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block title %}Campaign Data{% endblock %}
+
+{% block content %}
+<br>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Campaign Data</h2>
+
+    <!-- Present Campaigns Table -->
+    <h3 class="text-center">Current Campaigns</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Points</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Image</th>
+                <th>Completed By</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for campaign in present_campaigns %}
+            <tr>
+                <td>{{ campaign.title }}</td>
+                <td>{{ campaign.description }}</td>
+                <td>{{ campaign.points }}</td>
+                <td>{{ campaign.start_date }}</td>
+                <td>{{ campaign.end_date }}</td>
+                <td>
+                    {% if campaign.image %}
+                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" style="width: 100px; height: auto;">
+                    {% else %}
+                        <span>No image</span>
+                    {% endif %}
+                </td>
+                <td>
+                {% for name in campaign.completed_by %}
+                    {{ name }} , 
+                {% endfor %}
+            </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No current campaigns available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Future Campaigns Table -->
+    <h3 class="text-center mt-5">Future Campaigns</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Points</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Image</th>
+                <th>Completed By</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for campaign in future_campaigns %}
+            <tr>
+                <td>{{ campaign.title }}</td>
+                <td>{{ campaign.description }}</td>
+                <td>{{ campaign.points }}</td>
+                <td>{{ campaign.start_date }}</td>
+                <td>{{ campaign.end_date }}</td>
+                <td>
+                    {% if campaign.image %}
+                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" style="width: 100px; height: auto;">
+                    {% else %}
+                        <span>No image</span>
+                    {% endif %}
+                </td>
+                {% for name in campaign.completed_by %}
+                    <td>{{ name }}</td>
+                {% endfor %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No future campaigns available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Past Campaigns Table -->
+    <h3 class="text-center mt-5">Past Campaigns</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Points</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Image</th>
+                <th>Completed By</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for campaign in past_campaigns %}
+            <tr>
+                <td>{{ campaign.title }}</td>
+                <td>{{ campaign.description }}</td>
+                <td>{{ campaign.points }}</td>
+                <td>{{ campaign.start_date }}</td>
+                <td>{{ campaign.end_date }}</td>
+                <td>
+                    {% if campaign.image %}
+                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" style="width: 100px; height: auto;">
+                    {% else %}
+                        <span>No image</span>
+                    {% endif %}
+                </td>
+                {% for name in campaign.completed_by %}
+                    <td>{{ name }}</td>
+                {% endfor %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No past campaigns available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
