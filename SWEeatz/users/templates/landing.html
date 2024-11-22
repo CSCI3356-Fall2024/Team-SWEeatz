@@ -166,7 +166,12 @@
             <div class="top-scorers">
                 {% for student in top_3_students %}
                     <div class="top-scorer">
+<<<<<<< HEAD
                             <img src="{% if student.profile_picture %}{{ student.profile_picture.url }}{% else %}/media/profile_pics/Boston_College_Eagles_logo.svg.png{% endif %}">
+=======
+                            <img src="{% if student.profile_picture %}{{ student.profile_picture.url }}{% else %}/media/profile_pics/Boston_College_Eagles_logo.svg.png{% endif %}" 
+                            alt="avatar">
+>>>>>>> 1dd411a98120f2681a17eaca6aa64f56dff45742
                         <p>Rank: {{ forloop.counter }}<br><strong>{{ student.user.first_name }}</strong></p>
                         <p>{{ student.points_balance }}</p>
                     </div>
