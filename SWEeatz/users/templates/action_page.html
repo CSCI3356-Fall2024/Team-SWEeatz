@@ -5,47 +5,69 @@
 {% block content %}
 
 <div class="container mt-5 pt-5">
-    <h1 class="text-center">Action Page</h1>
-    <p class="text-center">Select a campaign, upload a photo, and submit to earn points!</p>
+    <div class="text-center">
+        <h1 class="fw-bold" style="color: #611800;">Action Page</h1>
+        <p style="color: #611800;">Select a campaign, upload a photo, and submit to earn points!</p>
+    </div>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" class="p-4 rounded" style="background-color: #611800; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         {% csrf_token %}
-        <h2 class="mt-4">What Sustainable Action Did You Perform Today?</h2>
+        <h2 class="mt-4 mb-4" style="color: #dad0d0;">What Sustainable Action Did You Perform Today?</h2>
 
         {% if ongoing_campaigns %}
             <div class="form-group">
-                <ol style="list-style: decimal inside;"> <!-- Explicit numbering style -->
+                <ol style="list-style: decimal inside; padding-left: 0;">
                     {% for campaign in ongoing_campaigns %}
                         <li class="mb-4">
-                            <input
-                                type="checkbox"
-                                id="campaign_{{ campaign.id }}"
-                                name="campaigns"
-                                value="{{ campaign.id }}"
-                                class="form-check-input">
-                            <label class="form-check-label" for="campaign_{{ campaign.id }}">
-                                {{ campaign.title }} ({{ campaign.start_date }} - {{ campaign.end_date }})
-                            </label>
-                            {% if campaign.image %}
-                                <div class="mt-2">
-                                    <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="img-fluid rounded" style="max-width: 100%; height: auto;">
+                            <div class="p-3 border rounded" style="background-color: #611800; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <div class="d-flex align-items-start">
+                                    <!-- Left side: Radio button and title -->
+                                    <div class="d-flex flex-column" style="flex-grow: 1;">
+                                        <input
+                                            type="radio"
+                                            id="campaign_{{ campaign.id }}"
+                                            name="campaign"
+                                            value="{{ campaign.id }}"
+                                            class="form-check-input mt-1 ms-auto"
+                                            style="margin-left: auto; margin-top:10px">
+
+                                        <label class="nav-link"
+                                            for="campaign_{{ campaign.id }}"
+                                            style="color: #dad0d0; margin-left: 20px;">
+                                            {{ campaign.title }} | {{ campaign.points }} points
+                                        </label>
+                                        <p class="small mb-2" style="color: #dad0d0; margin-left:410px" >
+                                            {{ campaign.start_date }} - {{ campaign.end_date }}
+                                        </p>
+                                        {% if campaign.image %}
+                                            <div class="mt-2">
+                                                <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="img-fluid rounded" style="max-width: 100%; height: auto;">
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Right side: Description under "Description:" label -->
+                                    <div class="ms-4" style="flex-basis: 40%; max-width: 400px; color: #dad0d0;">
+                                        <p><strong>Description:</strong></p>
+                                        <p class="small">{{ campaign.description }}</p>
+                                    </div>
                                 </div>
-                            {% endif %}
+                            </div>
                         </li>
                     {% endfor %}
                 </ol>
             </div>
         {% else %}
-            <p class="text-muted text-center">No ongoing campaigns available at the moment.</p>
+            <p class="text-muted text-center" style="color: #611800;">No ongoing campaigns available at the moment.</p>
         {% endif %}
 
-        <div class="form-group mt-3">
-            <label for="photo">Upload a Photo (Required)</label>
+        <div class="form-group mt-4">
+            <label for="photo" class="fw-bold" style="color: #611800;">Upload a Photo (Required)</label>
             <input type="file" id="photo" name="photo" class="form-control" required>
         </div>
 
         <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary btn-lg">Submit Action</button>
+            <button type="submit" class="btn btn-lg" style="background-color: #dad0d0; color: #611800; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: none;">Submit Action</button>
         </div>
     </form>
 </div>

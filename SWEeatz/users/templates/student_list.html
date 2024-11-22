@@ -57,6 +57,17 @@
                 </div>
                 <div class="col-sm-9">
                   <p class="text-muted mb-0"> {{student.major2}} </p>
+                  <hr>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3"> 
+                  <p class="mb-0">Completed Campaigns</p>
+                </div>
+                <div class="col-sm-9">
+                  {% for campaign in student.completed_campaigns %}
+                    {{ campaign }} ,  
+                  {% endfor %}
                 </div>
               </div>
             </div>

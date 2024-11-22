@@ -242,7 +242,7 @@ def action_page_view(request):
     ongoing_campaigns = Campaign.objects.filter(start_date__lte=now(), end_date__gte=now())
 
     if request.method == "POST":
-        campaign_ids = request.POST.getlist("campaigns")
+        campaign_ids = request.POST.get("campaign")
         photo = request.FILES.get("photo")
 
         if not campaign_ids or not photo:
@@ -271,6 +271,7 @@ def action_page_view(request):
             )
 
             student.points_balance += campaign.points
+            student.completed_campaigns.append(campaign.title)
             if student.user.email not in campaign.completed_by:
                 campaign.completed_by.append(student.user.get_full_name())
         campaign.save()

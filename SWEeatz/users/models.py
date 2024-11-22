@@ -73,6 +73,7 @@ class Student(models.Model):
     major2 = models.CharField(max_length=100, choices=MAJOR_CHOICES, default='N/A')
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     points_balance = models.IntegerField(default=0, help_text="Student's current points balance")
+    completed_campaigns = models.JSONField(default=list, help_text="List of campaigns the student has completed")
 
     def __str__(self):
         return self.user.get_full_name()
